@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Pistol : Weapon //hereda
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+    //No hay demora entre disparos
+    cooldown = 0;
+    //Esta no es un arma automática, lo cual significa que necesitamos hacer click en un botón de disparo cada vez que queramos dispararla
+    auto = false;
+    ammoCurrent=10;
+    ammoMax=10;
+    ammoBackPack=30;
+    }
+
+
+    //DEJAR UPDATE ANULARÍA LA LÓGICA QUE DEFINIMOS EN BASE
+
+    protected override void OnShoot()
+    {
+        Vector3 rayStartPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);        
+        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(rayStartPosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            GameObject gameBullet = Instantiate(particle, hit.point, hit.transform.rotation);
+            Destroy(gameBullet, 1);
+        }
+    }
+
+}
